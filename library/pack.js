@@ -115,7 +115,7 @@ function packLimitsO (type, arr, validTo, obj) {
 
   for (let i = 0; i < keys.length; i++) {
     body.writeUInt16LE(+keys[i], i * 4)
-    body.writeUInt16LE(obj[keys[i]], i * 2 + 2)
+    body.writeUInt16LE(obj[keys[i]], i * 4 + 2)
   }
 
   return Buffer.concat([head, limits, body])

@@ -99,7 +99,7 @@ function unpackLimitsO (buf) {
 
   for (let i = 0; i < body.byteLength / 4; i++) {
     const key = body.readUInt16LE(i * 4)
-    obj[key] = body.readUInt16LE(i * 2 + 2)
+    obj[key] = body.readUInt16LE(i * 4 + 2)
   }
 
   return [...unpackLimits(limits), obj]

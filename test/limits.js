@@ -6,7 +6,7 @@ const { expect } = require('chai')
 const now = Date.now()
 const arr = [1, 2, 3, 65535]
 const buf = pack(10, arr, now)
-const obj = { '10': 20, '30': 10000 }
+const obj = { '10': 20, '30': 10000, 7777: 555 }
 const buf11 = pack(11, arr, now, obj)
 
 describe('pack()', function () {
@@ -62,5 +62,11 @@ describe('unpack() 11', function () {
   it(`should be equal ${now}`, function () {
     Assert.equal(now, obj1.validTo)
   })
+
+  for (let key in obj) {
+    it(`obj['${key}'] should be equal obj2['${key}']`, function () {
+      Assert.equal(obj['30'], obj2['30'])
+    })
+  }
 })
 
