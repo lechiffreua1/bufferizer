@@ -1,5 +1,8 @@
 'use strict'
 
+const { _pack } = require('./library/pack')
+const { _unpack } = require('./library/unpack')
+
 module.exports = {
   pack,
   unpack
@@ -7,35 +10,23 @@ module.exports = {
 
 /**
  * @function pack
- * @description packs passed numbers to buffer
+ * @description packs passed arguments to buffer
  * @param {number} type - max 255
- * @param {number} id - max 65535
- * @param {number} bid - max 65535
- * @param {number} price - max 655.35
- * @returns {object} - buffer 7 byte length
+ * @param {*} args -
+ * @returns {object} - buffer
  * */
 
-function pack (type, id, bid, price) {
-  const buf = Buffer.alloc(7)
-  buf.writeUInt8(type, 0)
-  buf.writeUInt16LE(id, 1)
-  buf.writeUInt16LE(bid, 3)
-  buf.writeUInt16LE(parseInt(price * 100), 5)
-  return buf
+function pack (type, ...args) {
+  return _pack.get(type)(type, ...args)
 }
 
 /**
  * @function unpack
- * @description unpacks numbers from buffer
- * @param {object} buf - 7 byte length buffer
- * @returns {object} - array
+ * @description unpacks data from buffer
+ * @param {object} buf -
+ * @returns {*} -
  * */
 
 function unpack (buf) {
-  return [
-    buf.readUInt8(0),
-    buf.readUInt16LE(1),
-    buf.readUInt16LE(3),
-    buf.readUInt16LE(5) / 100
-  ]
+  return _unpack.get(buf.readUInt8(0))(buf)
 }

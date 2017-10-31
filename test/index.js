@@ -2,7 +2,7 @@
 
 const { pack, unpack } = require('../index')
 const Assert = require('assert')
-const arr = [255, 65535, 65535, 655.35]
+const arr = [0, 65535, 65535, 655.35]
 const buf = pack(...arr)
 const result = unpack(buf)
 
