@@ -2,7 +2,7 @@
 
 const _pack = new Map()
 
-_pack.set(0, packQueryWinImp)
+_pack.set(0, packQuery)
 _pack.set(1, packBid)
 _pack.set(2, packQueryWinImp)
 _pack.set(3, packQueryWinImp)
@@ -27,6 +27,21 @@ function packBid (type, id, bid, time) {
   buf.writeUInt16LE(id, 1)
   buf.writeUInt16LE(bid, 3)
   buf.writeUInt16LE(time < 65535 ? time : 65535, 5)
+  return buf
+}
+
+/**
+ * @function packQuery
+ * @description packs passed numbers to buffer
+ * @param {number} type - max 255
+ * @param {number} id - max 65535
+ * @returns {object} - buffer 7 byte length
+ * */
+
+function packQuery (type, id) {
+  const buf = Buffer.alloc(3)
+  buf.writeUInt8(type, 0)
+  buf.writeUInt16LE(id, 1)
   return buf
 }
 
