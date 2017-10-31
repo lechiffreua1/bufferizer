@@ -11,6 +11,9 @@ _unpack.set(5, empty) // conversion
 _unpack.set(6, empty) // postback
 _unpack.set(10, unpackLimits)
 _unpack.set(11, unpackLimitsO)
+_unpack.set(12, unpackString) // cl
+_unpack.set(13, unpackString) // cr
+_unpack.set(14, unpackString) // pa
 
 module.exports = {
   _unpack
@@ -103,4 +106,18 @@ function unpackLimitsO (buf) {
   }
 
   return [...unpackLimits(limits), obj]
+}
+
+/**
+ * @function unpackString
+ * @description unpack string, return type
+ * @param {object} buf -
+ * @returns {object} - array [type, string]
+ * */
+
+function unpackString (buf) {
+  return [
+    buf.readUInt8(0),
+    buf.slice(1).toString('utf8')
+  ]
 }

@@ -11,6 +11,9 @@ _pack.set(5, empty) // conversion
 _pack.set(6, empty) // postback
 _pack.set(10, packLimits)
 _pack.set(11, packLimitsO)
+_pack.set(12, packString) // cl
+_pack.set(13, packString) // cr
+_pack.set(14, packString) // pa
 
 module.exports = {
   _pack
@@ -119,4 +122,18 @@ function packLimitsO (type, arr, validTo, obj) {
   }
 
   return Buffer.concat([head, limits, body])
+}
+
+/**
+ * @function packString
+ * @description pack string and type
+ * @param {number} type -
+ * @param {string} string -
+ * @returns {object} - buffer
+ * */
+
+function packString (type, string) {
+  const head = Buffer.alloc(1)
+  head.writeUInt8(type, 0)
+  return Buffer.concat([head, Buffer.from(string)])
 }
