@@ -14,6 +14,7 @@ _pack.set(11, packLimitsO)
 _pack.set(12, packString) // cl
 _pack.set(13, packString) // cr
 _pack.set(14, packString) // pa
+_pack.set(15, packStringWithSubtype) // strings data exchange
 
 module.exports = {
   _pack
@@ -135,5 +136,21 @@ function packLimitsO (type, arr, validTo, obj) {
 function packString (type, string) {
   const head = Buffer.alloc(1)
   head.writeUInt8(type, 0)
+  return Buffer.concat([head, Buffer.from(string)])
+}
+
+/**
+ * @function packStringWithSubtype
+ * @description pack string, type and subType
+ * @param {number} type -
+ * @param {number} subType -
+ * @param {string} string -
+ * @returns {object} - buffer
+ * */
+
+function packStringWithSubtype (type, subType, string) {
+  const head = Buffer.alloc(2)
+  head.writeUInt8(type, 0)
+  head.writeUInt8(subType, 1)
   return Buffer.concat([head, Buffer.from(string)])
 }

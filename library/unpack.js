@@ -14,6 +14,7 @@ _unpack.set(11, unpackLimitsO)
 _unpack.set(12, unpackString) // cl
 _unpack.set(13, unpackString) // cr
 _unpack.set(14, unpackString) // pa
+_unpack.set(15, unpackStringWithSubtype) // string data exchange
 
 module.exports = {
   _unpack
@@ -119,5 +120,20 @@ function unpackString (buf) {
   return [
     buf.readUInt8(0),
     buf.slice(1).toString('utf8')
+  ]
+}
+
+/**
+ * @function unpackStringWithSubtype
+ * @description unpack string, return type and subtype
+ * @param {object} buf -
+ * @returns {object} - array [type, subtype, string]
+ * */
+
+function unpackStringWithSubtype (buf) {
+  return [
+    buf.readUInt8(0),
+    buf.readUInt8(1),
+    buf.slice(2).toString('utf8')
   ]
 }
