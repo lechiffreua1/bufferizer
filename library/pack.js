@@ -86,11 +86,11 @@ function packQueryWinImp (type, id, bid, price) {
  * */
 
 function packLimits (type, arr, validTo, MPNR) {
-  const head = Buffer.alloc(11)
+  const head = Buffer.alloc(13)
   const buf = Buffer.alloc(arr.length * 2)
   head.writeUInt8(type, 0)
-  head.writeUInt16LE(MPNR, 1)
-  head.writeDoubleLE(validTo, 3)
+  head.writeUInt32LE(MPNR, 1)
+  head.writeDoubleLE(validTo, 5)
 
   for (let i = 0; i < arr.length; i++) {
     buf.writeUInt16LE(arr[i], i * 2)

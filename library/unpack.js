@@ -76,15 +76,15 @@ function unpackQueryWinImp (buf) {
 
 function unpackLimits (buf) {
   const set = new Set()
-  const sub = buf.slice(11)
+  const sub = buf.slice(13)
 
   for (let i = 0; i < sub.byteLength / 2; i++) {
     set.add(sub.readUInt16LE(i * 2))
   }
 
-  return [buf.readUInt8(0), buf.readUInt16LE(1), {
+  return [buf.readUInt8(0), buf.readUInt32LE(1), {
     data: Array.from(set),
-    validTo: buf.readDoubleLE(3)
+    validTo: buf.readDoubleLE(5)
   }]
 }
 

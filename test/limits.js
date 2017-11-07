@@ -11,12 +11,12 @@ const buf11 = pack(11, arr, now, 999, obj)
 
 describe('pack()', function () {
 
-  it(`should returns buffer with length equal ${11 + arr.length * 2} bytes`, function () {
-    Assert.equal(11 + arr.length * 2, buf.length)
+  it(`should returns buffer with length equal ${13 + arr.length * 2} bytes`, function () {
+    Assert.equal(13 + arr.length * 2, buf.length)
   })
 
-  it(`should returns buffer with length equal ${13 + arr.length * 2 + Object.keys(obj).length * 4} bytes`, function () {
-    Assert.equal(13 + arr.length * 2 + Object.keys(obj).length * 4, buf11.length)
+  it(`should returns buffer with length equal ${15 + arr.length * 2 + Object.keys(obj).length * 4} bytes`, function () {
+    Assert.equal(15 + arr.length * 2 + Object.keys(obj).length * 4, buf11.length)
   })
 })
 
