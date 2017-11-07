@@ -81,14 +81,16 @@ function packQueryWinImp (type, id, bid, price) {
  * @param {number} type - 10
  * @param {object} arr - each value can not be above 65535
  * @param {number} validTo - max - Double
+ * @param {number} MPNR - maximum predicted number of requests
  * @returns {object} - buffer
  * */
 
-function packLimits (type, arr, validTo) {
-  const head = Buffer.alloc(9)
+function packLimits (type, arr, validTo, MPNR) {
+  const head = Buffer.alloc(11)
   const buf = Buffer.alloc(arr.length * 2)
   head.writeUInt8(type, 0)
-  head.writeDoubleLE(validTo, 1)
+  head.writeUInt16LE(MPNR, 1)
+  head.writeDoubleLE(validTo, 3)
 
   for (let i = 0; i < arr.length; i++) {
     buf.writeUInt16LE(arr[i], i * 2)
@@ -102,11 +104,12 @@ function packLimits (type, arr, validTo) {
  * @param {number} type - 10
  * @param {object} arr - each value can not be above 65535
  * @param {number} validTo - max - Double
+ * @param {number} MPNR - maximum predicted number of requests
  * @param {object} obj - quotes each key or value can not be above 65535
  * @returns {object} - buffer
  * */
 
-function packLimitsO (type, arr, validTo, obj) {
+function packLimitsO (type, arr, validTo, MPNR, obj) {
   const limits = packLimits(...arguments).slice(1)
   const l = limits.byteLength
 

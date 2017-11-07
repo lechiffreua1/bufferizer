@@ -76,15 +76,15 @@ function unpackQueryWinImp (buf) {
 
 function unpackLimits (buf) {
   const set = new Set()
-  const sub = buf.slice(9)
+  const sub = buf.slice(11)
 
   for (let i = 0; i < sub.byteLength / 2; i++) {
     set.add(sub.readUInt16LE(i * 2))
   }
 
-  return [buf.readUInt8(0), {
+  return [buf.readUInt8(0), buf.readUInt16LE(1), {
     data: Array.from(set),
-    validTo: buf.readDoubleLE(1)
+    validTo: buf.readDoubleLE(3)
   }]
 }
 
@@ -106,7 +106,9 @@ function unpackLimitsO (buf) {
     obj[key] = body.readUInt16LE(i * 4 + 2)
   }
 
-  return [...unpackLimits(limits), obj]
+  const [type, MPNR, mainObj] = unpackLimits(limits)
+
+  return [11, MPNR, mainObj, obj]
 }
 
 /**

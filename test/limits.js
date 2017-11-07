@@ -5,26 +5,38 @@ const Assert = require('assert')
 const { expect } = require('chai')
 const now = Date.now()
 const arr = [1, 2, 3, 65535]
-const buf = pack(10, arr, now)
+const buf = pack(10, arr, now, 999)
 const obj = { '10': 20, '30': 10000, 7777: 555 }
-const buf11 = pack(11, arr, now, obj)
+const buf11 = pack(11, arr, now, 999, obj)
 
 describe('pack()', function () {
 
-  it(`should returns buffer with length equal ${9 + arr.length * 2} bytes`, function () {
-    Assert.equal(9 + arr.length * 2, buf.length)
+  it(`should returns buffer with length equal ${11 + arr.length * 2} bytes`, function () {
+    Assert.equal(11 + arr.length * 2, buf.length)
   })
 
-  it(`should returns buffer with length equal ${9 + arr.length * 2 + Object.keys(obj).length * 4} bytes`, function () {
-    Assert.equal(11 + arr.length * 2 + Object.keys(obj).length * 4, buf11.length)
+  it(`should returns buffer with length equal ${13 + arr.length * 2 + Object.keys(obj).length * 4} bytes`, function () {
+    Assert.equal(13 + arr.length * 2 + Object.keys(obj).length * 4, buf11.length)
   })
 })
 
 describe('unpack() 10', function () {
-  const [type, obj] = unpack(buf)
+  const [type, MPNR, obj] = unpack(buf)
 
-  it('should be a number', function () {
+  it('type should be a number', function () {
     expect(type).to.be.a('number')
+  })
+
+  it(`should be equal 10`, function () {
+    Assert.equal(10, type)
+  })
+
+  it('MPNR should be a number', function () {
+    expect(MPNR).to.be.a('number')
+  })
+
+  it(`should be equal 999`, function () {
+    Assert.equal(999, MPNR)
   })
 
   it('should be an object', function () {
@@ -41,10 +53,22 @@ describe('unpack() 10', function () {
 })
 
 describe('unpack() 11', function () {
-  const [type, obj1, obj2] = unpack(buf11)
+  const [type, MPNR, obj1, obj2] = unpack(buf11)
 
-  it('should be a number', function () {
+  it('type should be a number', function () {
     expect(type).to.be.a('number')
+  })
+
+  it(`type should be equal 11`, function () {
+    Assert.equal(11, type)
+  })
+
+  it('MPNR should be a number', function () {
+    expect(MPNR).to.be.a('number')
+  })
+
+  it(`should be equal 999`, function () {
+    Assert.equal(999, MPNR)
   })
 
   it(`${obj1} should be an object`, function () {
