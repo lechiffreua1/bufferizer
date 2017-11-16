@@ -15,6 +15,7 @@ _unpack.set(12, unpackString) // cl
 _unpack.set(13, unpackString) // cr
 _unpack.set(14, unpackString) // pa
 _unpack.set(15, unpackStringWithSubtype) // string data exchange
+_unpack.set(200, unpackServiceMessage) // technical message
 
 module.exports = {
   _unpack
@@ -138,4 +139,15 @@ function unpackStringWithSubtype (buf) {
     buf.readUInt8(1),
     buf.slice(2).toString('utf8')
   ]
+}
+
+/**
+ * @function unpackServiceMessage
+ * @description unpack service message
+ * @param {object} buf -
+ * @returns {object} - array [type, commandType, command, startTS]
+ * */
+
+function unpackServiceMessage (buf) {
+  return [buf.readUInt8(0), buf.readUInt8(1), buf.readUInt8(2), buf.readDoubleLE(3)]
 }

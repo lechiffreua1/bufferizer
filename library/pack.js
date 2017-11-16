@@ -15,6 +15,7 @@ _pack.set(12, packString) // cl
 _pack.set(13, packString) // cr
 _pack.set(14, packString) // pa
 _pack.set(15, packStringWithSubtype) // strings data exchange
+_pack.set(200, packServiceMessage) // technical message
 
 module.exports = {
   _pack
@@ -156,4 +157,23 @@ function packStringWithSubtype (type, subType, string) {
   head.writeUInt8(type, 0)
   head.writeUInt8(subType, 1)
   return Buffer.concat([head, Buffer.from(string)])
+}
+
+/**
+ * @function packServiceMessage
+ * @description pack service message
+ * @param {number} type -
+ * @param {number} commandType - 0 - stop, 1 - start, 2 - started, 3 - paused, 4 - done
+ * @param {number} command - get from library
+ * @param {number} startTS - time
+ * @returns {object} - buffer
+ * */
+
+function packServiceMessage (type, commandType, command, startTS) {
+  const buf = Buffer.alloc(11)
+  buf.writeUInt8(type, 0)
+  buf.writeUInt8(commandType, 1)
+  buf.writeUInt8(command, 2)
+  buf.writeDoubleLE(startTS, 3)
+  return buf
 }
