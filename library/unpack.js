@@ -145,7 +145,7 @@ function unpackStringWithSubtype (buf) {
  * @function unpackServiceMessage
  * @description unpack service message
  * @param {object} buf -
- * @returns {object} - array [type, commandType, command, startTS]
+ * @returns {object} - array [type, commandType, commandCode, startTS]
  * */
 
 function unpackServiceMessage (buf) {

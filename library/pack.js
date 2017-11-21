@@ -163,17 +163,17 @@ function packStringWithSubtype (type, subType, string) {
  * @function packServiceMessage
  * @description pack service message
  * @param {number} type -
- * @param {number} commandType - 0 - stop, 1 - start, 2 - started, 3 - paused, 4 - done
- * @param {number} command - get from library
+ * @param {number} commandType - 0 - stop, 1 - start, 2 - started, 3 - paused, 4 - done, 5 - error
+ * @param {number} commandCode - get from library
  * @param {number} startTS - time
  * @returns {object} - buffer
  * */
 
-function packServiceMessage (type, commandType, command, startTS) {
+function packServiceMessage (type, commandType, commandCode, startTS) { // command => procedure
   const buf = Buffer.alloc(11)
   buf.writeUInt8(type, 0)
   buf.writeUInt8(commandType, 1)
-  buf.writeUInt8(command, 2)
+  buf.writeUInt8(commandCode, 2)
   buf.writeDoubleLE(startTS, 3)
   return buf
 }
