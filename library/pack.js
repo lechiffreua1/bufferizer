@@ -9,6 +9,7 @@ _pack.set(3, packQueryWinImp)
 _pack.set(4, empty) // click
 _pack.set(5, empty) // conversion
 _pack.set(6, empty) // postback
+_pack.set(7, packNoBid) // extended statistic
 _pack.set(10, packLimits)
 _pack.set(11, packLimitsO)
 _pack.set(12, packString) // cl
@@ -127,6 +128,40 @@ function packLimitsO (type, arr, validTo, MPNR, obj) {
   }
 
   return Buffer.concat([head, limits, body])
+}
+
+/**
+ * @function packNoBid
+ * @description unpack no bid buffer
+ * @param {number} type -
+ * @param {number} sspId -
+ * @param {number} countryId -
+ * @param {number} osId -
+ * @param {number} browserId -
+ * @param {number} reason -
+ * @param {number} place -
+ * @param {number} bidFloor -
+ * @returns {object} - buffer
+ * */
+
+function packNoBid (type, sspId, countryId, osId, browserId, reason, place, bidFloor) {
+  const now = Date.now()
+  const hour = (now - (now % 36e5)) / 1000
+  // type 1, hour = 4, sspId = 1, countryId = 1, 
+  // osId = 1, browserId = 1, reason = 1, bidFloor = 4
+  const buf = Buffer.alloc(15)
+
+  buf.writeUInt8(type, 0)
+  buf.writeUInt32LE(hour, 1)
+  buf.writeUInt8(sspId, 5)
+  buf.writeUInt8(countryId, 6)
+  buf.writeUInt8(osId, 7)
+  buf.writeUInt8(browserId, 8)
+  buf.writeUInt8(reason, 9)
+  buf.writeUInt8(place, 10)
+  buf.writeFloatLE(bidFloor, 11)
+
+  return buf
 }
 
 /**

@@ -9,6 +9,7 @@ _unpack.set(3, unpackQueryWinImp)
 _unpack.set(4, empty) // click
 _unpack.set(5, empty) // conversion
 _unpack.set(6, empty) // postback
+_unpack.set(7, unpackNoBid) // no bid
 _unpack.set(10, unpackLimits)
 _unpack.set(11, unpackLimitsO)
 _unpack.set(12, unpackString) // cl
@@ -20,6 +21,7 @@ _unpack.set(200, unpackServiceMessage) // technical message
 module.exports = {
   _unpack
 }
+
 function empty () {}
 
 /**
@@ -110,6 +112,27 @@ function unpackLimitsO (buf) {
   const [type, MPNR, mainObj] = unpackLimits(limits)
 
   return [11, MPNR, mainObj, obj]
+}
+
+/**
+ * @function unpackNoBid
+ * @description unpack no bid buffer
+ * @param {object} buf -
+ * @returns {object} - array [type, sspId, countryId, osId, browserId, reason, place, bidFloor]
+ * */
+
+function unpackNoBid (buf) {
+
+  return [buf.readUInt8(0), // type
+    buf.readUInt32LE(1), // hour
+    buf.readUInt8(5), // sspId
+    buf.readUInt8(6), // countryId
+    buf.readUInt8(7), // osId
+    buf.readUInt8(8), // browserId
+    buf.readUInt8(9), // reason
+    buf.readUInt8(10), // place
+    buf.readFloatLE(11) // bidFloor
+  ]
 }
 
 /**
