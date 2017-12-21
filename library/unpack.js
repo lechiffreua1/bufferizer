@@ -118,19 +118,20 @@ function unpackLimitsO (buf) {
  * @function unpackNoBid
  * @description unpack no bid buffer
  * @param {object} buf -
- * @returns {object} - array [type, sspId, countryId, osId, browserId, reason, place, bidFloor]
+ * @returns {object} - array [type, hour, sspId, browserId, countryId, osId, reason, bidFloor]
  * */
 
 function unpackNoBid (buf) {
+  // type 1, hour = 4, sspId = 2, countryId = 1,
+  // osId = 1, browserId = 1, reason = 1, bidFloor = 4
 
   return [buf.readUInt8(0), // type
     buf.readUInt32LE(1), // hour
-    buf.readUInt8(5), // sspId
-    buf.readUInt8(6), // countryId
-    buf.readUInt8(7), // osId
+    buf.readUInt16LE(5), // sspId
+    buf.readUInt8(7), // countryId
     buf.readUInt8(8), // browserId
-    buf.readUInt8(9), // reason
-    buf.readUInt8(10), // place
+    buf.readUInt8(9), // osId
+    buf.readUInt8(10), // reason
     buf.readFloatLE(11) // bidFloor
   ]
 }

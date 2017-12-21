@@ -1,6 +1,6 @@
 {
   "name": "bufferizer",
-  "version": "1.6.2",
+  "version": "1.6.3",
   "description": "packs - unpacks passed arguments to 7 byte length buffer",
   "main": "index.js",
   "scripts": {

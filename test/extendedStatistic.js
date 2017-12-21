@@ -3,7 +3,7 @@
 const { pack, unpack } = require('../index')
 const Assert = require('assert')
 const { expect } = require('chai')
-const data = [7, 1, 1, 1, 1, 1, 1, 0.35]
+const data = [7, 65535, 255, 255, 255, 255, 999.35]
 const buf = pack(...data)
 
 describe('pack() 7', function () {
@@ -14,7 +14,7 @@ describe('pack() 7', function () {
 })
 
 describe('unpack() 7', function () {
-  const [type, date, ...arr] = unpack(buf)
+  const [type, hour, ...arr] = unpack(buf)
   arr.unshift(type) // add type
   arr.push(Math.round(arr.pop() * 100) / 100) // round
 
