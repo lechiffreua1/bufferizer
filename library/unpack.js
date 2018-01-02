@@ -10,12 +10,15 @@ _unpack.set(4, empty) // click
 _unpack.set(5, empty) // conversion
 _unpack.set(6, empty) // postback
 _unpack.set(7, unpackNoBid) // no bid
+_unpack.set(8, unpackResponseCompressed) // no bid
+_unpack.set(9, unpackResponseExtended) // no bid
 _unpack.set(10, unpackLimits)
 _unpack.set(11, unpackLimitsO)
 _unpack.set(12, unpackString) // cl
 _unpack.set(13, unpackString) // cr
 _unpack.set(14, unpackString) // pa
 _unpack.set(15, unpackStringWithSubtype) // string data exchange
+_unpack.set(16, unpackFC) // string data exchange
 _unpack.set(200, unpackServiceMessage) // technical message
 
 module.exports = {
@@ -174,4 +177,44 @@ function unpackStringWithSubtype (buf) {
 
 function unpackServiceMessage (buf) {
   return [buf.readUInt8(0), buf.readUInt8(1), buf.readUInt8(2), buf.readDoubleLE(3)]
+}
+
+/**
+ * @function unpackResponseCompressed
+ * @description unpack bid response information for statistic
+ * @param {object} buf -
+ * @returns {object} - array [type, hash, ts, ipInt, countryId, osId, osv, browserId, brv, crid, sspId, markupAbs, responsePrice]
+ * */
+
+function unpackResponseCompressed (buf) {
+
+  return [
+    buf.readUInt8(0), // type,
+    buf.slice(34).toString('utf8'), // hash,
+    buf.readDoubleLE(1), // ts,
+    buf.readDoubleLE(9), // ipInt,
+    buf.readUInt8(17), // countryId,
+    buf.readUInt8(18), // osId,
+    buf.readUInt8(19), // osv,
+    buf.readUInt8(20), // browserId,
+    buf.readUInt8(21), // brv,
+    buf.readUInt16LE(22), // crid,
+    buf.readUInt16LE(24), // sspId,
+    buf.readFloatLE(26), // mAbs,
+    buf.readFloatLE(30) // rp
+  ]
+}
+
+function unpackResponseExtended (type, obj) {
+  // todo
+}
+
+function unpackFC (buf) {
+
+  return [
+    buf.readUInt8(0), // type,
+    buf.readUInt8(1), // isBid,
+    buf.readDoubleLE(2), // ipInt,
+    buf.slice(10).toString('utf8') // fcPK
+  ]
 }

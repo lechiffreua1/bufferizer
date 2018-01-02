@@ -10,12 +10,15 @@ _pack.set(4, empty) // click
 _pack.set(5, empty) // conversion
 _pack.set(6, empty) // postback
 _pack.set(7, packNoBid) // extended statistic
+_pack.set(8, packResponseCompressed) // bid response compressed stat object
+_pack.set(9, packResponseExtended) // bid response extended stat object
 _pack.set(10, packLimits)
 _pack.set(11, packLimitsO)
 _pack.set(12, packString) // cl
 _pack.set(13, packString) // cr
 _pack.set(14, packString) // pa
 _pack.set(15, packStringWithSubtype) // strings data exchange
+_pack.set(16, packFC) // unique
 _pack.set(200, packServiceMessage) // technical message
 
 module.exports = {
@@ -209,4 +212,70 @@ function packServiceMessage (type, commandType, commandCode, startTS) { // comma
   buf.writeUInt8(commandCode, 2)
   buf.writeDoubleLE(startTS, 3)
   return buf
+}
+
+/**
+ * @function packResponseCompressed
+ * @description pack bid response information for statistic
+ * @param {number} type -
+ * @param {string} hash -
+ * @param {number} ts -
+ * @param {number} ipInt -
+ * @param {number} countryId -
+ * @param {number} osId -
+ * @param {number} osv -
+ * @param {number} browserId -
+ * @param {number} brv -
+ * @param {number} crid -
+ * @param {number} sspId -
+ * @param {number} mAbs - markup abs
+ * @param {number} rp - response price
+ * @returns {object} - buffer
+ * */
+
+function packResponseCompressed (type, hash, ts, ipInt, countryId, osId, osv, browserId, brv, crid, sspId, mAbs, rp) {
+
+  // type 1, hash = dynamic
+  const buf = Buffer.alloc(34)
+
+  // ts = 8, ipInt = 8, countryId = 1, osId = 1, osv = 1,
+  // browserId = 1, brv = 1, crid = 2, sspId = 2, mAbs = 4, rp = 4
+
+  buf.writeUInt8(type, 0) // 1
+  buf.writeDoubleLE(ts, 1) // 8
+  buf.writeDoubleLE(ipInt, 9) // 8
+  buf.writeUInt8(countryId, 17) // 1
+  buf.writeUInt8(osId, 18) // 1
+  buf.writeUInt8(osv, 19) // 1
+  buf.writeUInt8(browserId, 20) // 1
+  buf.writeUInt8(brv, 21) // 1
+  buf.writeUInt16LE(crid, 22) // 2
+  buf.writeUInt16LE(sspId, 24) // 2
+  buf.writeFloatLE(mAbs, 26) // 4
+  buf.writeFloatLE(rp, 30) // 4
+
+  return Buffer.concat([buf, Buffer.from(hash)])
+}
+
+function packResponseExtended (type, obj) {
+  // todo
+}
+
+/**
+ * @function packFC
+ * @description pack frequency cap information for unique
+ * @param {number} type -
+ * @param {number} isBid -
+ * @param {number} ipInt -
+ * @param {string} fcPK -
+ * @returns {object} - buffer
+ * */
+
+function packFC (type, isBid, ipInt, fcPK) {
+  const buf = Buffer.alloc(10)
+  buf.writeUInt8(type, 0) // 1
+  buf.writeUInt8(isBid, 1) // 1
+  buf.writeDoubleLE(ipInt, 2) // 8
+
+  return Buffer.concat([buf, Buffer.from(fcPK)])
 }
