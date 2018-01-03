@@ -6,9 +6,9 @@ _pack.set(0, packQuery)
 _pack.set(1, packBid)
 _pack.set(2, packQueryWinImp)
 _pack.set(3, packQueryWinImp)
-_pack.set(4, empty) // click
-_pack.set(5, empty) // conversion
-_pack.set(6, empty) // postback
+_pack.set(4, packQueryWinImp) // click
+_pack.set(5, packQueryWinImp) // conversion
+_pack.set(6, packQueryWinImp) // postback
 _pack.set(7, packNoBid) // extended statistic
 _pack.set(8, packResponseCompressed) // bid response compressed stat object
 _pack.set(9, packResponseExtended) // bid response extended stat object

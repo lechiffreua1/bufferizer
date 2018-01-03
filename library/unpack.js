@@ -6,9 +6,9 @@ _unpack.set(0, unpackQuery)
 _unpack.set(1, unpackBid)
 _unpack.set(2, unpackQueryWinImp)
 _unpack.set(3, unpackQueryWinImp)
-_unpack.set(4, empty) // click
-_unpack.set(5, empty) // conversion
-_unpack.set(6, empty) // postback
+_unpack.set(4, unpackQueryWinImp) // click
+_unpack.set(5, unpackQueryWinImp) // conversion
+_unpack.set(6, unpackQueryWinImp) // postback
 _unpack.set(7, unpackNoBid) // no bid
 _unpack.set(8, unpackResponseCompressed) // no bid
 _unpack.set(9, unpackResponseExtended) // no bid
