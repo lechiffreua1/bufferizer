@@ -6,9 +6,9 @@ _pack.set(0, packQuery)
 _pack.set(1, packBid)
 _pack.set(2, packQueryWinImp)
 _pack.set(3, packQueryWinImp)
-_pack.set(4, empty) // click
-_pack.set(5, empty) // conversion
-_pack.set(6, empty) // postback
+_pack.set(4, packQueryWinImp) // click
+_pack.set(5, packQueryWinImp) // conversion
+_pack.set(6, packQueryWinImp) // postback
 _pack.set(7, packNoBid) // extended statistic
 _pack.set(8, packResponseCompressed) // bid response compressed stat object
 _pack.set(9, packResponseExtended) // bid response extended stat object
@@ -19,6 +19,7 @@ _pack.set(13, packString) // cr
 _pack.set(14, packString) // pa
 _pack.set(15, packStringWithSubtype) // strings data exchange
 _pack.set(16, packFC) // unique
+_pack.set(17, packConv) // conversions list
 _pack.set(200, packServiceMessage) // technical message
 
 module.exports = {
@@ -278,4 +279,27 @@ function packFC (type, isBid, ipInt, fcPK) {
   buf.writeDoubleLE(ipInt, 2) // 8
 
   return Buffer.concat([buf, Buffer.from(fcPK)])
+}
+
+/**
+ * @function packConv
+ * @description pack conversions list for incoming
+ * @param {number} type
+ * @param {object} array
+ * @returns {object} - buffer
+ */
+
+function packConv (type, array) {
+  let offset = 1
+  const buf = Buffer.alloc(array.length * 5 + offset)  // 1 - type, 2 - userId, 2- convId, 1 - convType
+  buf.writeUInt8(type, 0)
+
+  for (let i = 0; i < array.length; i++) {
+    const { userId, convId, convType } = array[i]
+    buf.writeUInt16LE(userId, offset)
+    buf.writeUInt16LE(convId, offset + 2)
+    buf.writeUInt8(convType, offset + 4)
+    offset += 5
+  }
+  return buf
 }

@@ -6,9 +6,9 @@ _unpack.set(0, unpackQuery)
 _unpack.set(1, unpackBid)
 _unpack.set(2, unpackQueryWinImp)
 _unpack.set(3, unpackQueryWinImp)
-_unpack.set(4, empty) // click
-_unpack.set(5, empty) // conversion
-_unpack.set(6, empty) // postback
+_unpack.set(4, unpackQueryWinImp) // click
+_unpack.set(5, unpackQueryWinImp) // conversion
+_unpack.set(6, unpackQueryWinImp) // postback
 _unpack.set(7, unpackNoBid) // no bid
 _unpack.set(8, unpackResponseCompressed) // no bid
 _unpack.set(9, unpackResponseExtended) // no bid
@@ -19,6 +19,7 @@ _unpack.set(13, unpackString) // cr
 _unpack.set(14, unpackString) // pa
 _unpack.set(15, unpackStringWithSubtype) // string data exchange
 _unpack.set(16, unpackFC) // string data exchange
+_unpack.set(17, unpackConv) // conversions list
 _unpack.set(200, unpackServiceMessage) // technical message
 
 module.exports = {
@@ -217,4 +218,27 @@ function unpackFC (buf) {
     buf.readDoubleLE(2), // ipInt,
     buf.slice(10).toString('utf8') // fcPK
   ]
+}
+
+/**
+ * @function unpackConv
+ * @description unpack conversions array of objects
+ * @param {object} buf
+ * @returns {[number, object]}
+ */
+
+function unpackConv (buf) {
+  const objectsArray = []
+  const data = buf.slice(1)
+  let offset = 0
+
+  for (let i = 0; i < data.byteLength / 5; i++) {
+    objectsArray.push({
+      userId: data.readUInt16LE(offset),
+      convId: data.readUInt16LE(offset + 2),
+      convType: data.readUInt8(offset + 4)
+    })
+    offset += 5
+  }
+  return [buf.readUInt8(0), objectsArray]
 }
