@@ -4,11 +4,11 @@ const _unpack = new Map()
 
 _unpack.set(0, unpackQuery)
 _unpack.set(1, unpackBid)
-_unpack.set(2, unpackQueryWinImp)
-_unpack.set(3, unpackQueryWinImp)
-_unpack.set(4, unpackQueryWinImp) // click
-_unpack.set(5, unpackQueryWinImp) // conversion
-_unpack.set(6, unpackQueryWinImp) // postback
+_unpack.set(2, unpackWinImpClickConvPost)
+_unpack.set(3, unpackWinImpClickConvPost)
+_unpack.set(4, unpackWinImpClickConvPost) // click
+_unpack.set(5, unpackWinImpClickConvPost) // conversion
+_unpack.set(6, unpackWinImpClickConvPost) // postback
 _unpack.set(7, unpackNoBid) // no bid
 _unpack.set(8, unpackResponseCompressed) // no bid
 _unpack.set(9, unpackResponseExtended) // no bid
@@ -59,13 +59,13 @@ function unpackQuery (buf) {
 }
 
 /**
- * @function unpackQueryWinImp
+ * @function unpackWinImpClickConvPost
  * @description unpacks numbers from buffer
  * @param {object} buf - 7 byte length buffer
  * @returns {object} - array
  * */
 
-function unpackQueryWinImp (buf) {
+function unpackWinImpClickConvPost (buf) {
   return [
     buf.readUInt8(0),
     buf.readUInt16LE(1),

@@ -4,11 +4,11 @@ const _pack = new Map()
 
 _pack.set(0, packQuery)
 _pack.set(1, packBid)
-_pack.set(2, packQueryWinImp)
-_pack.set(3, packQueryWinImp)
-_pack.set(4, packQueryWinImp) // click
-_pack.set(5, packQueryWinImp) // conversion
-_pack.set(6, packQueryWinImp) // postback
+_pack.set(2, packWinImpClickConvPost)
+_pack.set(3, packWinImpClickConvPost)
+_pack.set(4, packWinImpClickConvPost) // click
+_pack.set(5, packWinImpClickConvPost) // conversion
+_pack.set(6, packWinImpClickConvPost) // postback
 _pack.set(7, packNoBid) // extended statistic
 _pack.set(8, packResponseCompressed) // bid response compressed stat object
 _pack.set(9, packResponseExtended) // bid response extended stat object
@@ -63,7 +63,7 @@ function packQuery (type, id) {
 }
 
 /**
- * @function packQueryWinImp
+ * @function packWinImpClickConvPost
  * @description packs passed numbers to buffer
  * @param {number} type - max 255
  * @param {number} id - max 65535
@@ -72,7 +72,7 @@ function packQuery (type, id) {
  * @returns {object} - buffer 7 byte length
  * */
 
-function packQueryWinImp (type, id, bid, price) {
+function packWinImpClickConvPost (type, id, bid, price) {
   const buf = Buffer.alloc(7)
   buf.writeUInt8(type, 0)
   buf.writeUInt16LE(id, 1)
