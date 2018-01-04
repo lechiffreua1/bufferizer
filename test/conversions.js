@@ -11,7 +11,7 @@ const conversions = [
 ]
 
 const buf = pack(type, conversions)
-const unpackedData = unpack(buf)
+const [ unpackedType, unpackedData ] = unpack(buf)
 
 describe('pack()', function () {
 
@@ -23,10 +23,12 @@ describe('pack()', function () {
 describe('unpack()', function () {
 
   it('pack type should be strict equal to 17', function () {
-    Assert.strictEqual(type, unpackedData[0])
+    Assert.strictEqual(type, unpackedType)
   })
 
   it('should be equal to initial conversions array', function () {
-    Assert.deepStrictEqual(conversions, unpackedData[1])
+    for (let i = 0; i < unpackedData.length; i++) {
+      Assert.deepStrictEqual(conversions[i], unpackedData[i])
+    }
   })
 })
