@@ -20,6 +20,7 @@ _unpack.set(14, unpackString) // pa
 _unpack.set(15, unpackStringWithSubtype) // string data exchange
 _unpack.set(16, unpackFC) // string data exchange
 _unpack.set(17, unpackConv) // conversions list
+_unpack.set(18, unpackString) // conversion
 _unpack.set(200, unpackServiceMessage) // technical message
 
 module.exports = {
