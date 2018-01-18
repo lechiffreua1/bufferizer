@@ -24,6 +24,7 @@ _unpack.set(18, unpackString) // conversion
 _unpack.set(19, unpackString) // gps targeting
 _unpack.set(20, unpackGps)    // gps targeting list
 _unpack.set(200, unpackServiceMessage) // technical message
+_unpack.set(255, unpackAuth) // authentication message
 
 module.exports = {
   _unpack
@@ -250,7 +251,7 @@ function unpackConv (buf) {
  * @function unpackGps
  * @description unpack gps targeting array of objects
  * @param {object} buf
- * @returns {[number, object]}
+ * @returns {object} - array [number, object]
  */
 
 function unpackGps (buf) {
@@ -268,4 +269,19 @@ function unpackGps (buf) {
     offset += 20
   }
   return [buf.readUInt8(0), objectsArray]
+}
+
+/**
+ * @function unpackAuth
+ * @description pack auth data
+ * @param {object} buf
+ * @returns {object} - array [type, password]
+ */
+
+function unpackAuth (buf) {
+
+  return [
+    buf.readUInt8(0),
+    buf.slice(1, buf.byteLength).toString()
+  ]
 }

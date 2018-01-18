@@ -24,6 +24,7 @@ _pack.set(18, packString) // conversion
 _pack.set(19, packString) // gps targeting
 _pack.set(20, packGps)    // gps targeting list
 _pack.set(200, packServiceMessage) // technical message
+_pack.set(255, packAuth) // authentication message
 
 module.exports = {
   _pack
@@ -288,7 +289,7 @@ function packFC (type, isBid, ipInt, fcPK) {
  * @function packConv
  * @description pack conversions list for incoming
  * @param {number} type
- * @param {[object]} array
+ * @param {object} array
  * @returns {object} - buffer
  */
 
@@ -328,4 +329,18 @@ function packGps (type, array) {
     offset += 20
   }
   return buf
+}
+
+/**
+ * @function packAuth
+ * @description pack auth data
+ * @param {number} type
+ * @param {string} pass
+ * @returns {object} - buffer
+ */
+
+function packAuth (type, pass = '') {
+  const buf = Buffer.alloc(1)
+  buf.writeUInt8(type, 0)
+  return Buffer.concat([buf, Buffer.from(pass)])
 }
