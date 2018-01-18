@@ -21,6 +21,8 @@ _unpack.set(15, unpackStringWithSubtype) // string data exchange
 _unpack.set(16, unpackFC) // string data exchange
 _unpack.set(17, unpackConv) // conversions list
 _unpack.set(18, unpackString) // conversion
+_unpack.set(19, unpackString) // campaignGps
+_unpack.set(20, unpackGps)    // campaignGps list
 _unpack.set(200, unpackServiceMessage) // technical message
 _unpack.set(255, unpackAuth) // authentication message
 
@@ -241,6 +243,30 @@ function unpackConv (buf) {
       convType: data.readUInt8(offset + 4)
     })
     offset += 5
+  }
+  return [buf.readUInt8(0), objectsArray]
+}
+
+/**
+ * @function unpackGps
+ * @description unpack campaignGps array of objects
+ * @param {object} buf
+ * @returns {object} - array [number, object]
+ */
+
+function unpackGps (buf) {
+  const objectsArray = []
+  const data = buf.slice(1)
+  let offset = 0
+
+  for (let i = 0; i < data.byteLength / 20; i++) {
+    objectsArray.push({
+      campaignId: data.readUInt16LE(offset),
+      lat: data.readDoubleLE(offset + 2),
+      lon: data.readDoubleLE(offset + 10),
+      radius: data.readUInt16LE(offset + 18)
+    })
+    offset += 20
   }
   return [buf.readUInt8(0), objectsArray]
 }
