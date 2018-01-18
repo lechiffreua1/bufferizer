@@ -22,6 +22,7 @@ _unpack.set(16, unpackFC) // string data exchange
 _unpack.set(17, unpackConv) // conversions list
 _unpack.set(18, unpackString) // conversion
 _unpack.set(200, unpackServiceMessage) // technical message
+_unpack.set(255, unpackAuth) // authentication message
 
 module.exports = {
   _unpack
@@ -242,4 +243,19 @@ function unpackConv (buf) {
     offset += 5
   }
   return [buf.readUInt8(0), objectsArray]
+}
+
+/**
+ * @function unpackAuth
+ * @description pack auth data
+ * @param {object} buf
+ * @returns {object} - array [type, password]
+ */
+
+function unpackAuth (buf) {
+
+  return [
+    buf.readUInt8(0),
+    buf.slice(1, buf.byteLength).toString()
+  ]
 }

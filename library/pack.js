@@ -22,6 +22,7 @@ _pack.set(16, packFC) // unique
 _pack.set(17, packConv) // conversions list
 _pack.set(18, packString) // conversion
 _pack.set(200, packServiceMessage) // technical message
+_pack.set(255, packAuth) // authentication message
 
 module.exports = {
   _pack
@@ -303,4 +304,18 @@ function packConv (type, array) {
     offset += 5
   }
   return buf
+}
+
+/**
+ * @function packAuth
+ * @description pack auth data
+ * @param {number} type
+ * @param {string} pass
+ * @returns {object} - buffer
+ */
+
+function packAuth (type, pass = '') {
+  const buf = Buffer.alloc(1)
+  buf.writeUInt8(type, 0)
+  return Buffer.concat([buf, Buffer.from(pass)])
 }
