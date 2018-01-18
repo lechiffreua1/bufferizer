@@ -21,6 +21,8 @@ _pack.set(15, packStringWithSubtype) // strings data exchange
 _pack.set(16, packFC) // unique
 _pack.set(17, packConv) // conversions list
 _pack.set(18, packString) // conversion
+_pack.set(19, packString) // campaignGps
+_pack.set(20, packGps)    // campaignGps list
 _pack.set(200, packServiceMessage) // technical message
 
 module.exports = {
@@ -286,13 +288,13 @@ function packFC (type, isBid, ipInt, fcPK) {
  * @function packConv
  * @description pack conversions list for incoming
  * @param {number} type
- * @param {object} array
+ * @param {[object]} array
  * @returns {object} - buffer
  */
 
 function packConv (type, array) {
   let offset = 1
-  const buf = Buffer.alloc(array.length * 5 + offset)  // 1 - type, 2 - userId, 2- convId, 1 - convType
+  const buf = Buffer.alloc(array.length * 5 + offset)  // 1 - type, 2 - userId, 2 - convId, 1 - convType
   buf.writeUInt8(type, 0)
 
   for (let i = 0; i < array.length; i++) {
@@ -301,6 +303,29 @@ function packConv (type, array) {
     buf.writeUInt16LE(convId, offset + 2)
     buf.writeUInt8(convType, offset + 4)
     offset += 5
+  }
+  return buf
+}
+
+/**
+ * @function packGps
+ * @description pack campaignGps list for cluster
+ * @param {number} type
+ * @param {[object]} array
+ */
+
+function packGps (type, array) {
+  let offset = 1
+  const buf = Buffer.alloc(array.length * 20 + offset) // 1 - type, 2 - campaignId, 8 - longitude, 8 - latitude, 2 - radius
+  buf.writeUInt8(type, 0)
+
+  for (let i = 0; i < array.length; i++) {
+    const {campaignId, lat, lon, radius} = array[i]
+    buf.writeUInt16LE(campaignId, offset)
+    buf.writeDoubleLE(lat, offset + 2)
+    buf.writeDoubleLE(lon, offset + 10)
+    buf.writeUInt16LE(radius, offset + 18)
+    offset += 20
   }
   return buf
 }
