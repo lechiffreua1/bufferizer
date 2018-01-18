@@ -261,7 +261,7 @@ function unpackGps (buf) {
 
   for (let i = 0; i < data.byteLength / 20; i++) {
     objectsArray.push({
-      campaignId: data.readUInt16LE(offset),
+      bid: data.readUInt16LE(offset),
       lat: data.readDoubleLE(offset + 2),
       lon: data.readDoubleLE(offset + 10),
       radius: data.readUInt16LE(offset + 18)

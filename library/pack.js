@@ -317,12 +317,12 @@ function packConv (type, array) {
 
 function packGps (type, array) {
   let offset = 1
-  const buf = Buffer.alloc(array.length * 20 + offset) // 1 - type, 2 - campaignId, 8 - longitude, 8 - latitude, 2 - radius
+  const buf = Buffer.alloc(array.length * 20 + offset) // 1 - type, 2 - bid, 8 - longitude, 8 - latitude, 2 - radius
   buf.writeUInt8(type, 0)
 
   for (let i = 0; i < array.length; i++) {
-    const {campaignId, lat, lon, radius} = array[i]
-    buf.writeUInt16LE(campaignId, offset)
+    const {bid, lat, lon, radius} = array[i]
+    buf.writeUInt16LE(bid, offset)
     buf.writeDoubleLE(lat, offset + 2)
     buf.writeDoubleLE(lon, offset + 10)
     buf.writeUInt16LE(radius, offset + 18)
