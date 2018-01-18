@@ -21,8 +21,8 @@ _unpack.set(15, unpackStringWithSubtype) // string data exchange
 _unpack.set(16, unpackFC) // string data exchange
 _unpack.set(17, unpackConv) // conversions list
 _unpack.set(18, unpackString) // conversion
-_unpack.set(19, unpackString) // campaignGps
-_unpack.set(20, unpackGps)    // campaignGps list
+_unpack.set(19, unpackString) // gps targeting
+_unpack.set(20, unpackGps)    // gps targeting list
 _unpack.set(200, unpackServiceMessage) // technical message
 
 module.exports = {
@@ -248,7 +248,7 @@ function unpackConv (buf) {
 
 /**
  * @function unpackGps
- * @description unpack campaignGps array of objects
+ * @description unpack gps targeting array of objects
  * @param {object} buf
  * @returns {[number, object]}
  */

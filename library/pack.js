@@ -21,8 +21,8 @@ _pack.set(15, packStringWithSubtype) // strings data exchange
 _pack.set(16, packFC) // unique
 _pack.set(17, packConv) // conversions list
 _pack.set(18, packString) // conversion
-_pack.set(19, packString) // campaignGps
-_pack.set(20, packGps)    // campaignGps list
+_pack.set(19, packString) // gps targeting
+_pack.set(20, packGps)    // gps targeting list
 _pack.set(200, packServiceMessage) // technical message
 
 module.exports = {
