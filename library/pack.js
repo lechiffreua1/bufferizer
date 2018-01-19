@@ -24,6 +24,7 @@ _pack.set(18, packString) // conversion
 _pack.set(19, packString) // campaignGps
 _pack.set(20, packGps)    // campaignGps list
 _pack.set(200, packServiceMessage) // technical message
+_pack.set(201, packInfoMessage) // info message
 _pack.set(255, packAuth) // authentication message
 
 module.exports = {
@@ -217,6 +218,22 @@ function packServiceMessage (type, commandType, commandCode, startTS) { // comma
   buf.writeUInt8(commandCode, 2)
   buf.writeDoubleLE(startTS, 3)
   return buf
+}
+
+/**
+ * @function packInfoMessage
+ * @description pack request to get information
+ * @param {number} type -
+ * @param {number} commandType - 0 - get, 1 - send
+ * @param {string} data - get from library
+ * @returns {object} - buffer
+ * */
+
+function packInfoMessage (type, commandType, data = '') {
+  const buf = Buffer.alloc(2)
+  buf.writeUInt8(type, 0)
+  buf.writeUInt8(commandType, 1)
+  return Buffer.concat([buf, Buffer.from(data instanceof Object ? JSON.stringify(data) : data)])
 }
 
 /**
