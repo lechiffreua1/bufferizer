@@ -272,7 +272,7 @@ function unpackConv (buf) {
 
 function unpackGps (buf) {
   const objectsArray = []
-  const data = buf.slice(1)
+  const data = buf.slice(9)
   let offset = 0
 
   for (let i = 0; i < data.byteLength / 20; i++) {
@@ -284,7 +284,7 @@ function unpackGps (buf) {
     })
     offset += 20
   }
-  return [buf.readUInt8(0), objectsArray]
+  return [buf.readUInt8(0), buf.readDoubleLE(1), objectsArray]
 }
 
 /**

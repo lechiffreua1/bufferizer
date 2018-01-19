@@ -330,12 +330,14 @@ function packConv (type, array) {
  * @description pack campaignGps list for cluster
  * @param {number} type
  * @param {[object]} array
+ * @param {number} version
  */
 
-function packGps (type, array) {
-  let offset = 1
-  const buf = Buffer.alloc(array.length * 20 + offset) // 1 - type, 2 - bid, 8 - longitude, 8 - latitude, 2 - radius
+function packGps (type, array, version) {
+  let offset = 9
+  const buf = Buffer.alloc(array.length * 20 + offset) // 1 - type, 8 - version, [2 - bid, 8 - longitude, 8 - latitude, 2 - radius]
   buf.writeUInt8(type, 0)
+  buf.writeDoubleLE(version, 1)
 
   for (let i = 0; i < array.length; i++) {
     const {bid, lat, lon, radius} = array[i]
