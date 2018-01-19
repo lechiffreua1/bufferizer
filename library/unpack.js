@@ -24,6 +24,7 @@ _unpack.set(18, unpackString) // conversion
 _unpack.set(19, unpackString) // gps targeting
 _unpack.set(20, unpackGps)    // gps targeting list
 _unpack.set(200, unpackServiceMessage) // technical message
+_unpack.set(201, unpackInfoMessage) // info message
 _unpack.set(255, unpackAuth) // authentication message
 
 module.exports = {
@@ -182,6 +183,21 @@ function unpackStringWithSubtype (buf) {
 
 function unpackServiceMessage (buf) {
   return [buf.readUInt8(0), buf.readUInt8(1), buf.readUInt8(2), buf.readDoubleLE(3)]
+}
+
+/**
+ * @function unpackInfoMessage
+ * @description unpack response with information
+ * @param {object} buf -
+ * @returns {object} - array [type, commandType, data]
+ * */
+
+function unpackInfoMessage (buf) {
+  return [
+    buf.readUInt8(0),
+    buf.readUInt8(1),
+    buf.slice(2, buf.byteLength).toString('utf8')
+  ]
 }
 
 /**
